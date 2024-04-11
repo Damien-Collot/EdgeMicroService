@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_DB: Edge
     ports:
-      - "3424:3424"
+      - "3424:5432"
     volumes:
       - PostgreClassico:/var/lib/postgresql/data
 

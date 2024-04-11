@@ -1,19 +1,21 @@
 package fr.insa.fisa.product.controller;
 
 import fr.insa.fisa.product.service.ProductService;
-import jakarta.annotation.Resource;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/service/product")
+@RestController
+@RequestMapping("/service/product") // Définir le chemin de base ici
 public class ProductController {
-    @Resource
-    ProductService productService;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/findOne/{id}")
-    public ResponseEntity<?> findOne(@Param("id") Long id){
+    public ResponseEntity<?> findOne(@PathVariable("id") Long id){
         return ResponseEntity.ok(productService.findOne(id));
     }
 }

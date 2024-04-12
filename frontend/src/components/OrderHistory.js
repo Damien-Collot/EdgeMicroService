@@ -10,8 +10,8 @@ const orders = [
       date: '2023-04-12', 
       amount: '120.00', 
       products: [
-        { name: 'Produit A', qty: 2, description: 'Description de Produit A' }, 
-        { name: 'Produit B', qty: 1, description: 'Description de Produit B' }
+        { name: 'Produit A', qty: 2, description: 'Description de Produit A', montant: '60.00' }, 
+        { name: 'Produit B', qty: 1, description: 'Description de Produit B', montant: '60.00'  }
       ] 
     },
     { 
@@ -20,8 +20,8 @@ const orders = [
       date: '2023-04-15', 
       amount: '80.00', 
       products: [
-        { name: 'Produit C', qty: 1, description: 'Description de Produit C' }, 
-        { name: 'Produit D', qty: 3, description: 'Description de Produit D' }
+        { name: 'Produit C', qty: 1, description: 'Description de Produit C', montant: '50.00' }, 
+        { name: 'Produit D', qty: 3, description: 'Description de Produit D', montant: '30.00' }
       ] 
     },
     // Plus de commandes si nécessaire...
@@ -55,7 +55,8 @@ function Row({ order }) {
                   <TableRow>
                     <TableCell style={{ fontWeight: 'bold' }}>Nom du Produit</TableCell>
                     <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                    <TableCell align="right" style={{ fontWeight: 'bold' }}>Quantité</TableCell>
+                    <TableCell style={{ fontWeight: 'bold' }}>Quantité</TableCell>
+                    <TableCell align="right" style={{ fontWeight: 'bold' }}>Montant</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -63,7 +64,8 @@ function Row({ order }) {
                     <TableRow key={productRow.name}>
                       <TableCell component="th" scope="row">{productRow.name}</TableCell>
                       <TableCell>{productRow.description}</TableCell>
-                      <TableCell align="right">{productRow.qty}</TableCell>
+                      <TableCell>{productRow.qty}</TableCell>
+                      <TableCell align="right">{productRow.montant}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -2,7 +2,7 @@ package fr.insa.fisa.product.controller;
 
 import fr.insa.fisa.product.model.ProductEntity;
 import fr.insa.fisa.product.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/service/product")
 public class ProductController {
-    @Autowired
+    @Resource
     private ProductService productService;
 
-    @GetMapping("/findOneById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> findOne(@PathVariable("id") Long id) {
         try {
             ProductEntity res = productService.findOneById(id);
@@ -31,7 +31,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/findOneByName/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<?> findOne(@PathVariable("name") String name) {
         try {
             ProductEntity res = productService.findOneByName(name);
@@ -45,7 +45,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/all")
     public ResponseEntity<?> findAll() {
         try {
             List<ProductEntity> res = productService.findAll();

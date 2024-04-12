@@ -13,5 +13,7 @@ public class ProductEntity {
     @Column
     String name;
     @Column
+    String description;
+    @Column
     float montant;
 }

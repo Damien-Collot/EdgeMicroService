@@ -14,5 +14,6 @@ public class ProductEntity {
     Long Id;
     @Column
     String name;
-
+    @Column
+    float montant;
 }

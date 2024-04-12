@@ -3,6 +3,7 @@ package fr.insa.fisa.client.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "client")
 public class ClientEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

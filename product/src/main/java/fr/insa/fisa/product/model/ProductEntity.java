@@ -1,13 +1,11 @@
 package fr.insa.fisa.product.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
+@Table(name = "product")
 public class ProductEntity {
     @Id
     @GeneratedValue

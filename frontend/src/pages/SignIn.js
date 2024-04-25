@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signIn } from '../services/clientServices'
+import { signIn } from '../services/clientServices';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,12 +24,12 @@ export default function SignIn() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const email = data.get('email');
+        const login = data.get('login');
         const password = data.get('password');
         const rememberMe = data.get('remember');
 
         try {
-            const response = await signIn(email, password);
+            const response = await signIn(login, password); 
             console.log(response);
             navigate("/home");
             if (rememberMe) {
@@ -64,10 +64,10 @@ export default function SignIn() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="login"
+                            label="Username"
+                            name="login"
+                            autoComplete="username"
                             autoFocus
                         />
                         <TextField

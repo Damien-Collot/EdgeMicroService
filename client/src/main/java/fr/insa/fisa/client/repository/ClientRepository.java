@@ -11,9 +11,7 @@ public interface ClientRepository extends CrudRepository<ClientEntity, Long> {
     public List<ClientEntity> findAll();
     public Optional<ClientEntity> findById(Long id);
 
-    public ClientEntity createClient(ClientEntity client);
-
-    public void deleteClient(Long id);
+    public void removeClientEntityById(Long id);
 
     Optional<ClientEntity> findByLogin(String login);
 }

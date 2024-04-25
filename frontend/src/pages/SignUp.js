@@ -22,6 +22,7 @@ export default function SignUp() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const name = data.get('name');  // Retrieve the name from the form
         const login = data.get('login');
         const password = data.get('password');
         const confirmPassword = data.get('confirmPassword');
@@ -32,7 +33,7 @@ export default function SignUp() {
         }
 
         try {
-            const response = await signUp(login, password);
+            const response = await signUp(name, login, password);  // Pass the name along with login and password
             console.log(response);
             navigate("/signIn");
         } catch (error) {
@@ -63,11 +64,20 @@ export default function SignUp() {
                             margin="normal"
                             required
                             fullWidth
+                            id="name"
+                            label="Full Name"
+                            name="name"
+                            autoComplete="name"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             id="login"
                             label="Username"
                             name="login"
                             autoComplete="username"
-                            autoFocus
                         />
                         <TextField
                             margin="normal"

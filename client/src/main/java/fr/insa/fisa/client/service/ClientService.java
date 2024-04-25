@@ -2,6 +2,7 @@ package fr.insa.fisa.client.service;
 
 import fr.insa.fisa.client.model.ClientEntity;
 import fr.insa.fisa.client.repository.ClientRepository;
+import jakarta.annotation.Resource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,9 @@ import java.util.Optional;
 @Service
 public class ClientService {
 
+    @Resource
     private ClientRepository clientRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 
     public void createClient(ClientEntity client){

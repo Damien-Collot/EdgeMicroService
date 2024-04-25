@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.204.25:8081/service/paiement';
+const API_URL = 'http://localhost:8081/service/paiement';
 
 export const getAllPaiements = async () => {
     try {

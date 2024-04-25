@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUp } from '../services/clientServices';
+import { useSnackbar } from 'notistack';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,26 +19,34 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
     let navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const name = data.get('name');  // Retrieve the name from the form
+        const name = data.get('name'); 
         const login = data.get('login');
         const password = data.get('password');
         const confirmPassword = data.get('confirmPassword');
 
         if (password !== confirmPassword) {
-            console.error('Passwords do not match');
+            enqueueSnackbar("Passwords do not match", { variant: 'error' });
             return;
         }
 
         try {
-            const response = await signUp(name, login, password);  // Pass the name along with login and password
-            console.log(response);
-            navigate("/signIn");
+            const response = await signUp(name, login, password);
+            if (response.status === 200) {  // Assuming API responds with status 200 on success
+                enqueueSnackbar('Registration successful!', { variant: 'success' });
+                localStorage.setItem('userId', response.data.id); // Assuming response data has the user ID
+                localStorage.setItem('userLogin', response.data.login); // Assuming response data has the user login
+                navigate("/home");
+            } else {
+                enqueueSnackbar('Registration failed!', { variant: 'error' });
+            }
         } catch (error) {
             console.error('Sign up failed:', error);
+            enqueueSnackbar('Sign up failed: ' + error.message, { variant: 'error' });
         }
     };
 
@@ -109,7 +118,7 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="center">
                             <Grid item>
-                                <Link component={RouterLink} to="/" variant="body2">    
+                                <Link component={RouterLink} to="/signIn" variant="body2">    
                                     {"Already have an account? Sign In"}
                                 </Link>
                             </Grid>

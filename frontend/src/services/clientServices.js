@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.204.25:8082/service/client';
+const API_URL = 'http://localhost:8082/service/client';
 
 export const getAllClients = async () => {
     try {

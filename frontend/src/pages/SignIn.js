@@ -15,11 +15,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSnackbar } from 'notistack';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
     let navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -29,15 +31,21 @@ export default function SignIn() {
         const rememberMe = data.get('remember');
 
         try {
-            const response = await signIn(login, password); 
+            const response = await signIn(login, password);
             console.log(response);
-            navigate("/home");
-            if (rememberMe) {
-              localStorage.setItem('userId', response.data.id);
-              localStorage.setItem('userLogin', response.data.login);
+            if (response.status === 200) {
+                enqueueSnackbar('Login successful!', { variant: 'success' });
+                navigate("/home");
+                if (rememberMe) {
+                    localStorage.setItem('userId', response.data.id);
+                    localStorage.setItem('userLogin', response.data.login);
+                }
+            } else {
+                enqueueSnackbar('Login failed!', { variant: 'error' });
             }
         } catch (error) {
             console.error('Login failed:', error);
+            enqueueSnackbar('Login failed: ' + error.message, { variant: 'error' });
         }
     };
 

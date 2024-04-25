@@ -1,15 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, Typography, Grid, Avatar, Box, IconButton, TextField } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EditIcon from '@mui/icons-material/Edit';
+import { getClient } from '../services/clientServices';
 
 export default function Profile() {
   const [userInfo, setUserInfo] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et euismod ligula. Morbi mattis pretium eros, non tristique erat volutpat non.",
+    name: "Chargement...",
+    login: "",
+    bio: "Aucune information disponible.",
   });
   const [editMode, setEditMode] = useState(false);
+  const initialBioRef = useRef(userInfo.bio);
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      console.error("No user id found");
+      return;
+    }
+    const fetchUserInfo = async () => {
+      try {
+        const data = await getClient(userId);
+        setUserInfo({
+          name: data.name,
+          login: data.login,
+          bio: initialBioRef
+        });
+      } catch (error) {
+        console.error('Failed to fetch user info:', error);
+        setUserInfo({
+          name: "Erreur de chargement",
+          bio: "Impossible de charger les données."
+        });
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
 
   const handleBioChange = (event) => {
     setUserInfo({ ...userInfo, bio: event.target.value });
@@ -17,7 +46,7 @@ export default function Profile() {
 
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="100vh">
-    <Typography sx={{paddingBottom: "20px"}} variant="h4">Profil client</Typography>
+      <Typography sx={{paddingBottom: "20px"}} variant="h4">Profil client</Typography>
       <Card sx={{ maxWidth: 600, width: '100%', m: 2 }}>
         <Box display="flex" justifyContent="center">
           <Avatar sx={{ bgcolor: "primary.main", width: 100, height: 100 }}>
@@ -33,7 +62,7 @@ export default function Profile() {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" color="text.secondary" align="center">
-                {userInfo.email}
+                {userInfo.login}
               </Typography>
             </Grid>
             <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

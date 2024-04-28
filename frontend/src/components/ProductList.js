@@ -41,7 +41,7 @@ export default function ProductList() {
     };
 
     const calculateTotal = () => {
-        return selectedProducts.reduce((total, product) => total + (product.price * product.quantity), 0).toFixed(2);
+        return selectedProducts.reduce((total, product) => total + (product.montant * product.quantity), 0).toFixed(2);
     };
 
     return (
@@ -69,7 +69,7 @@ export default function ProductList() {
                             <CardContent>
                                 <Typography variant="h5">{product.name}</Typography>
                                 <Typography color="text.secondary">{product.description}</Typography>
-                                <Typography variant="body2">Prix: {product.price} €</Typography>
+                                <Typography variant="body2">Prix: {product.montant} €</Typography>
                                 {selectedProducts.find(p => p.id === product.id) && (
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', pt: 2 }}>
                                         <IconButton size="small" onClick={(e) => { e.stopPropagation(); updateProductQuantity(product.id, -1); }}>

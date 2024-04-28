@@ -22,33 +22,33 @@ export default function SignUp() {
     const { enqueueSnackbar } = useSnackbar();
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const name = data.get('name'); 
-        const login = data.get('login');
-        const password = data.get('password');
-        const confirmPassword = data.get('confirmPassword');
-
-        if (password !== confirmPassword) {
-            enqueueSnackbar("Passwords do not match", { variant: 'error' });
-            return;
-        }
-
-        try {
-            const response = await signUp(name, login, password);
-            if (response.status === 200) {  // Assuming API responds with status 200 on success
-                enqueueSnackbar('Registration successful!', { variant: 'success' });
-                localStorage.setItem('userId', response.data.id); // Assuming response data has the user ID
-                localStorage.setItem('userLogin', response.data.login); // Assuming response data has the user login
-                navigate("/home");
-            } else {
-                enqueueSnackbar('Registration failed!', { variant: 'error' });
-            }
-        } catch (error) {
-            console.error('Sign up failed:', error);
-            enqueueSnackbar('Sign up failed: ' + error.message, { variant: 'error' });
-        }
-    };
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const name = data.get('name'); 
+      const login = data.get('login');
+      const password = data.get('password');
+      const confirmPassword = data.get('confirmPassword');
+  
+      if (password !== confirmPassword) {
+          enqueueSnackbar("Passwords do not match", { variant: 'error' });
+          return;
+      }
+  
+      try {
+          const response = await signUp(name, login, password);
+          if (response.status === 200 && response.data === "User registered successfully!") {
+              enqueueSnackbar('Registration successful!', { variant: 'success' });
+              navigate("/signIn");
+          } else {
+              enqueueSnackbar(`Registration failed: ${response.data}`, { variant: 'error' });
+          }
+      } catch (error) {
+          console.error('Sign up failed:', error);
+          enqueueSnackbar(`Sign up failed: ${error.data || 'Unknown error'}`, { variant: 'error' });
+      }
+  };
+  
+  
 
     return (
         <ThemeProvider theme={defaultTheme}>

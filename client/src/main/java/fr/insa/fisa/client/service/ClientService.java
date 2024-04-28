@@ -14,11 +14,15 @@ public class ClientService {
 
     @Resource
     private ClientRepository clientRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public ClientService(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
-    public void createClient(ClientEntity client){
-        client.setPassword(bCryptPasswordEncoder.encode(client.getPassword()));
+    public void createClient(ClientEntity client) {
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
         clientRepository.save(client);
     }
 

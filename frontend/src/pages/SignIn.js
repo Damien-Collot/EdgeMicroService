@@ -31,18 +31,17 @@ export default function SignIn() {
         const rememberMe = data.get('remember');
 
         try {
-            const response = await signIn(login, password);
-            console.log(response);
-            if (response.status === 200) {
-                enqueueSnackbar('Login successful!', { variant: 'success' });
-                navigate("/home");
-                if (rememberMe) {
-                    localStorage.setItem('userId', response.data.id);
-                    localStorage.setItem('userLogin', response.data.login);
-                }
-            } else {
-                enqueueSnackbar('Login failed!', { variant: 'error' });
-            }
+          const response = await signIn(login, password);
+          if (response.status === 200) {
+              enqueueSnackbar('Login successful!', { variant: 'success' });
+              navigate("/home");
+              if (rememberMe) {
+                  localStorage.setItem('userId', response.data.id);
+                  localStorage.setItem('userLogin', response.data.login);
+              }
+          } else {
+              enqueueSnackbar('Login failed: ' + (response.data || "Unknown error"), { variant: 'error' });
+          }
         } catch (error) {
             console.error('Login failed:', error);
             enqueueSnackbar('Login failed: ' + error.message, { variant: 'error' });

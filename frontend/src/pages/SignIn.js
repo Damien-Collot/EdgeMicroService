@@ -29,7 +29,7 @@ export default function SignIn() {
         const login = data.get('login');
         const password = data.get('password');
         const rememberMe = data.get('remember');
-
+    
         try {
           const response = await signIn(login, password);
           if (response.status === 200) {
@@ -44,9 +44,10 @@ export default function SignIn() {
           }
         } catch (error) {
             console.error('Login failed:', error);
-            enqueueSnackbar('Login failed: ' + error.message, { variant: 'error' });
+            enqueueSnackbar('Login failed: ' + (error.response.data || "Unknown error"), { variant: 'error' });
         }
     };
+  
 
     return (
         <ThemeProvider theme={defaultTheme}>

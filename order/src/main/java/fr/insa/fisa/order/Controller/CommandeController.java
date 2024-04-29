@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -17,21 +18,21 @@ public class CommandeController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/createCommande")
+    @PostMapping("/createCommande")
     public ResponseEntity<?> createOrder(@RequestBody OrderEntity orderEntity) {
         try {
             OrderEntity res = orderService.newCommande(orderEntity);
-            if (res != null){
+            if (res != null) {
                 return ResponseEntity.ok(res);
-            }else{
+            } else {
                 return ResponseEntity.noContent().build();
             }
-        }catch (Exception e){
-            return ResponseEntity.internalServerError().body(e);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error creating order");
         }
     }
 
-    @GetMapping("/getCommande{idCommande}")
+    @GetMapping("/getCommande/{idCommande}")
     public ResponseEntity<?> getOrder(@PathVariable("idCommande") int id) {
         try {
             Optional<OrderEntity> orderEntity = orderService.findOneById(id);
@@ -45,10 +46,10 @@ public class CommandeController {
         }
     }
 
-    @GetMapping("/getCommandes{idClient}")
+    @GetMapping("/getCommandes/{idClient}")
     public ResponseEntity<?> getOrders(@PathVariable("idClient") int id) {
         try {
-            OrderEntity orderEntity = orderService.findAllByIdClient(id);
+            List<OrderEntity> orderEntity = orderService.findAllByIdClient(id);
             if (orderEntity != null){
                 return ResponseEntity.ok(orderEntity);
             }else{

@@ -22,14 +22,16 @@ export const getClient = async (id) => {
 
 export const signIn = async (login, password) => {
     try {
-        const response = await axios.post(`${API_URL}/signip`, null, {
+        const response = await axios.post(`${API_URL}/signin`, null, {
             params: { login, password }
         });
-        return response.data;
+        return response;
     } catch (error) {
         throw error;
     }
 };
+
+
 
 
 export const signUp = async (name, login, password) => {

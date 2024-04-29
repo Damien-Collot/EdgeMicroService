@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSnackbar } from 'notistack';
 import { Box, Card, CardContent, Typography, Button, Grid, IconButton, Badge } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -7,10 +8,17 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { green } from '@mui/material/colors';
 import { getAllProducts } from '../services/productServices';
+import { createPaiement } from '../services/paiementServices'
+import { createOrder } from '../services/orderServices'
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+
 
 export default function ProductList() {
     const [products, setProducts] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
+
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -19,12 +27,38 @@ export default function ProductList() {
                 setProducts(productsData.map(product => ({ ...product, quantity: 0 })));
             } catch (error) {
                 console.error('Failed to fetch products:', error);
+                enqueueSnackbar('Failed to fetch products', { variant: 'error' });
             }
         };
-
+    
         fetchProducts();
-    }, []);
+    }, [enqueueSnackbar]);
+    
 
+    const handlePayment = async (orderId, amount) => {
+        const paymentData = {
+            orderId,
+            amount,
+            clientId: localStorage.getItem('userId'),
+            method: 'Credit Card',
+            status: 'pending'
+        };
+
+        try {
+            console.log("Payment data to send:", paymentData);
+            const paymentResponse = await createPaiement(paymentData);
+            if (paymentResponse && paymentResponse.id) {
+                enqueueSnackbar('Payment processed successfully', { variant: 'success' });
+            } else {
+                enqueueSnackbar('Failed to process payment', { variant: 'error' });
+            }
+        } catch (error) {
+            console.error('Error processing payment:', error);
+            enqueueSnackbar('Error processing payment', { variant: 'error' });
+        }
+    };
+
+    
     const handleSelectProduct = (product) => {
         const productIndex = selectedProducts.findIndex(p => p.id === product.id);
         if (productIndex < 0) {
@@ -42,6 +76,49 @@ export default function ProductList() {
 
     const calculateTotal = () => {
         return selectedProducts.reduce((total, product) => total + (product.montant * product.quantity), 0).toFixed(2);
+    };
+    const handleCreateOrder = async () => {
+        if (!selectedProducts.length) {
+            enqueueSnackbar('No products selected', { variant: 'warning' });
+            return;
+        }
+
+        const orderData = {
+            products: selectedProducts,
+            total: calculateTotal(),
+            clientId: localStorage.getItem('userId'),
+            status: 'pending'
+        };
+
+        try {
+            console.log("Order data to send:", orderData);
+            const response = await createOrder(orderData);
+            if (response && response.id) {
+                enqueueSnackbar('Order created successfully', { variant: 'success' });
+                handlePayment(response.id, orderData.total);
+            } else {
+                enqueueSnackbar('Failed to create order', { variant: 'error' });
+            }
+        } catch (error) {
+            console.error('Error creating order:', error);
+            enqueueSnackbar('Error creating order', { variant: 'error' });
+        }
+    };
+    const handleOpenDialog = () => {
+        if (!selectedProducts.length) {
+            enqueueSnackbar('No products selected. Please add some products before ordering.', { variant: 'warning' });
+            return;
+        }
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    const handleConfirmOrder = async () => {
+        handleCloseDialog();
+        await handleCreateOrder();
     };
 
     return (
@@ -91,7 +168,27 @@ export default function ProductList() {
             </Grid>
             <Box sx={{ position: 'sticky', bottom: 0, bgcolor: 'background.paper', borderTop: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', p: 2, zIndex: 1 }}>
                 <Typography variant="h6">Total: {calculateTotal()} €</Typography>
-                <Button variant="contained">Passer la commande</Button>
+                <Button 
+                    variant="contained" 
+                    onClick={handleOpenDialog} 
+                    disabled={selectedProducts.length === 0}
+                >
+                    Passer la commande
+                </Button>
+                <Dialog open={openDialog} onClose={handleCloseDialog}>
+                    <DialogTitle>Confirmer la commande</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Voulez-vous vraiment passer cette commande d'un montant de {calculateTotal()} € ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog}>Annuler</Button>
+                        <Button onClick={handleConfirmOrder} autoFocus>
+                            Confirmer
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
         </Box>
     );

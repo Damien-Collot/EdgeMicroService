@@ -23,23 +23,20 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-    public OrderEntity findAllByIdClient(int id) {
-        return (OrderEntity) orderRepository.findAllByIdClient(id);
+    public List<OrderEntity> findAllByIdClient(int id) {
+        return orderRepository.findAllByIdClient(id);
     }
-
     public void addProduct(CommandeDTO commandeDTO) {
-        OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setId(commandeDTO.getId());
-        orderEntity.setIdClient(commandeDTO.getIdClient());
-        orderEntity.setReference(commandeDTO.getReference());
-        orderEntity.setDate(commandeDTO.getDate());
-        orderEntity.setReference(commandeDTO.getReference());
-
         List<ProductDTO> products = commandeDTO.getProducts();
-        for (ProductDTO product : products){
+        for (ProductDTO product : products) {
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.setIdClient(commandeDTO.getIdClient());
+            orderEntity.setReference(commandeDTO.getReference());
+            orderEntity.setDate(commandeDTO.getDate());
             orderEntity.setIdProduit(product.getIdProduct());
             orderEntity.setQuantite(product.getQuantite());
             orderRepository.save(orderEntity);
         }
     }
+
 }

@@ -44,7 +44,7 @@ public class PaiementController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("/createPaiement")
     public ResponseEntity<?> createPaiement(@RequestBody PaiementDto paiementDto){
         try{
             PaiementEntity res = paiementService.createOne(paiementDto);

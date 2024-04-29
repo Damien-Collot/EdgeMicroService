@@ -5,7 +5,6 @@ import fr.insa.fisa.client.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +16,6 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping
     public ResponseEntity<List<ClientEntity>> getAllClients() {
@@ -36,25 +32,14 @@ public class ClientController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestParam String login, @RequestParam String password) {
-        System.out.println("Login attempt: " + login + " with password: " + password);
+        System.out.println("Login attempt: " + login); // Afficher la tentative de connexion
         return clientService.findByLogin(login)
                 .map(client -> {
-                    System.out.println("Stored password hash: " + client.getPassword());
-                    boolean matches = passwordEncoder.matches(password, client.getPassword());
-                    DebugSignInResponse debugResponse = new DebugSignInResponse(
-                            matches ? "User logged in successfully!" : "Login failed",
-                            matches,
-                            password,
-                            client.getPassword()
-                    );
-                    return matches ? ResponseEntity.ok(debugResponse) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(debugResponse);
+                    boolean matches = password.equals(client.getPassword());
+                    System.out.println("Password match result: " + matches);
+                    return matches ? ResponseEntity.ok("User logged in successfully!") : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
                 })
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new DebugSignInResponse(
-                        "User not found",
-                        false,
-                        password,
-                        "No password stored for this user"
-                )));
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found"));
     }
 
 
@@ -68,8 +53,7 @@ public class ClientController {
         ClientEntity newClient = new ClientEntity();
         newClient.setName(name);
         newClient.setLogin(login);
-        newClient.setPassword(passwordEncoder.encode(password));
-
+        newClient.setPassword(password);
         clientService.createClient(newClient);
 
         return ResponseEntity.ok("User registered successfully!");

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name="order")
+@Table(name = "\"order\"")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,20 +20,6 @@ public class OrderEntity {
     private String libelle;
     private int idProduit;
     private int quantite;
-
-    public OrderEntity(int id, int idClient, String reference, LocalDate date, String libelle, int idProduit, int quantite) {
-        this.id = id;
-        this.idClient = idClient;
-        this.reference = reference;
-        this.date = date;
-        this.libelle = libelle;
-        this.idProduit = idProduit;
-        this.quantite = quantite;
-    }
-
-    public OrderEntity() {
-
-    }
 
     public int getId() {
         return id;

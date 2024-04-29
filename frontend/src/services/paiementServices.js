@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8081/service/paiement';
+const API_URL = 'http://localhost:8084/service/paiement';
 
 export const getAllPaiements = async () => {
     try {
@@ -24,7 +24,7 @@ export const getPaiementsByClientId = async (idClient) => {
 
 export const createPaiement = async (paiementDto) => {
     try {
-        const response = await axios.post(`${API_URL}/`, paiementDto);
+        const response = await axios.post(`${API_URL}/createPaiement`, paiementDto);
         return response.data;
     } catch (error) {
         console.error("Error creating payment:", error);

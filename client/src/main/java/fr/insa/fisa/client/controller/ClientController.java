@@ -33,13 +33,16 @@ public class ClientController {
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestParam String login, @RequestParam String password) {
         System.out.println("Login attempt: " + login); // Afficher la tentative de connexion
-        return clientService.findByLogin(login)
-                .map(client -> {
-                    boolean matches = password.equals(client.getPassword());
-                    System.out.println("Password match result: " + matches);
-                    return matches ? ResponseEntity.ok("User logged in successfully!") : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
-                })
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found"));
+        try {
+            ClientEntity client = clientService.findByLoginAndPassword(login, password);
+            if (client != null){
+                return ResponseEntity.ok(client);
+            }else {
+                return ResponseEntity.noContent().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e);
+        }
     }
 
 

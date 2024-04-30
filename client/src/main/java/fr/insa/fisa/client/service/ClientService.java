@@ -38,4 +38,12 @@ public class ClientService {
     public Optional<ClientEntity> findByLogin(String login) {
         return clientRepository.findByLogin(login);
     }
+
+    public ClientEntity findByLoginAndPassword(String login, String mdp) {
+        ClientEntity client = clientRepository.findByLogin(login).orElse(null);
+        if (client != null){
+            if (client.getPassword().equals(mdp)) return client;
+        }
+        return null;
+    }
 }

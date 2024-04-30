@@ -33,10 +33,10 @@ export default function SignIn() {
         try {
           const response = await signIn(login, password);
           if (response.status === 200) {
+              localStorage.setItem('userId', response.data.id);
               enqueueSnackbar('Login successful!', { variant: 'success' });
               navigate("/home");
               if (rememberMe) {
-                  localStorage.setItem('userId', response.data.id);
                   localStorage.setItem('userLogin', response.data.login);
               }
           } else {

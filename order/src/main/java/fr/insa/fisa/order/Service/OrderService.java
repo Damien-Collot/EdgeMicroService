@@ -7,6 +7,7 @@ import fr.insa.fisa.order.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,10 +32,14 @@ public class OrderService {
         for (ProductDTO product : products) {
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.setIdClient(commandeDTO.getIdClient());
-            orderEntity.setReference(commandeDTO.getReference());
-            orderEntity.setDate(commandeDTO.getDate());
-            orderEntity.setIdProduit(product.getIdProduct());
-            orderEntity.setQuantite(product.getQuantite());
+            orderEntity.setIdProduit(commandeDTO.getIdClient());
+            orderEntity.setName(product.getName());
+            orderEntity.setDescription(product.getDescription());
+            orderEntity.setQuantite(commandeDTO.getIdClient());
+            orderEntity.setMontant(commandeDTO.getIdClient());
+            orderEntity.setDate(ZonedDateTime.now());
+            orderEntity.setStatus(commandeDTO.getStatus());
+            orderEntity.setTotal(commandeDTO.getTotal());
             orderRepository.save(orderEntity);
         }
     }

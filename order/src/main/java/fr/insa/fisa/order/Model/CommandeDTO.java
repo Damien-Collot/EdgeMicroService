@@ -9,19 +9,15 @@ import java.util.List;
 
 @Data
 public class CommandeDTO {
-    private int id;
     private int idClient;
-    private String reference;
-    private LocalDate date;
-    private String libelle;
     private List<ProductDTO> products;
+    private String status;
+    private String total;
 
-    public CommandeDTO(int id, int idClient, String reference, LocalDate date, String libelle, List<ProductDTO> products) {
-        this.id = id;
+    public CommandeDTO(int idClient, List<ProductDTO> products, String status, String total) {
         this.idClient = idClient;
-        this.reference = reference;
-        this.date = date;
-        this.libelle = libelle;
         this.products = products;
+        this.status = status;
+        this.total = total;
     }
 }

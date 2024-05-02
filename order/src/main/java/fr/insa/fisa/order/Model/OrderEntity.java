@@ -6,6 +6,8 @@ import jdk.jfr.DataAmount;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,49 +17,14 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int idClient;
-    private String reference;
-    private LocalDate date;
-    private String libelle;
+
     private int idProduit;
+    private String name;
+    private String description;
     private int quantite;
+    private float montant;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getIdClient() {
-        return idClient;
-    }
-
-    public void setIdClient(int idClient) {
-        this.idClient = idClient;
-    }
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
+    private ZonedDateTime date;
+    private String status;
+    private String total;
 }

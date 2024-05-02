@@ -35,13 +35,12 @@ export default function ProductList() {
     }, [enqueueSnackbar]);
     
 
-    const handlePayment = async (orderId, amount) => {
+    const handlePayment = async (orderId, montant) => {
         const paymentData = {
-            orderId,
-            amount,
-            clientId: localStorage.getItem('userId'),
-            method: 'Credit Card',
-            status: 'pending'
+            montant: montant,
+            idClient: localStorage.getItem('userId'),
+            libelle: 'Commande',
+            datePaiement: Date.now(),
         };
 
         try {

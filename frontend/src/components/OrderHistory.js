@@ -8,7 +8,6 @@ export default function OrderHistory() {
     const [orders, setOrders] = useState([]);
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('label');
-  
     useEffect(() => {
       const clientId = localStorage.getItem('userId');
       if (clientId) {
@@ -50,45 +49,12 @@ export default function OrderHistory() {
         return (
             <>
                 <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                    <TableCell>
-                        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton>
-                    </TableCell>
-                    <TableCell component="th" scope="row">{order.label}</TableCell>
+                    <TableCell>{order.name}</TableCell>
+                    <TableCell>{order.description}</TableCell>
+                    <TableCell>{order.quantite}</TableCell>
+                    <TableCell>{order.montant}</TableCell>
                     <TableCell>{order.date}</TableCell>
-                    <TableCell>{order.amount}</TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                        <Collapse in={open} timeout="auto" unmountOnExit>
-                            <Box margin={1}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    Produits de la commande
-                                </Typography>
-                                <Table size="small" aria-label="products">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell style={{ fontWeight: 'bold' }}>Nom du Produit</TableCell>
-                                            <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                                            <TableCell style={{ fontWeight: 'bold' }}>Quantité</TableCell>
-                                            <TableCell align="right" style={{ fontWeight: 'bold' }}>Montant</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {order.products.map((productRow) => (
-                                            <TableRow key={productRow.name}>
-                                                <TableCell component="th" scope="row">{productRow.name}</TableCell>
-                                                <TableCell>{productRow.description}</TableCell>
-                                                <TableCell>{productRow.qty}</TableCell>
-                                                <TableCell align="right">{productRow.montant}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </Box>
-                        </Collapse>
-                    </TableCell>
+                    <TableCell>{order.total}</TableCell>
                 </TableRow>
             </>
         );
@@ -101,14 +67,40 @@ export default function OrderHistory() {
                 <Table stickyHeader aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
-                            <TableCell />
                             <TableCell sx={{ fontWeight: 'bold' }}>
                                 <TableSortLabel
-                                active={orderBy === 'label'}
-                                direction={orderBy === 'label' ? order : 'asc'}
-                                onClick={() => handleRequestSort('label')}
+                                active={orderBy === 'name'}
+                                direction={orderBy === 'name' ? order : 'asc'}
+                                onClick={() => handleRequestSort('name')}
                                 >
-                                Libellé
+                                Name
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>
+                                <TableSortLabel
+                                active={orderBy === 'description'}
+                                direction={orderBy === 'description' ? order : 'asc'}
+                                onClick={() => handleRequestSort('description')}
+                                >
+                                Description
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>
+                                <TableSortLabel
+                                active={orderBy === 'quantite'}
+                                direction={orderBy === 'quantite' ? order : 'asc'}
+                                onClick={() => handleRequestSort('quantite')}
+                                >
+                                Quantite
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>
+                                <TableSortLabel
+                                active={orderBy === 'montant'}
+                                direction={orderBy === 'montant' ? order : 'asc'}
+                                onClick={() => handleRequestSort('montant')}
+                                >
+                                Montant
                                 </TableSortLabel>
                             </TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>
@@ -122,11 +114,11 @@ export default function OrderHistory() {
                             </TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>
                                 <TableSortLabel
-                                active={orderBy === 'amount'}
-                                direction={orderBy === 'amount' ? order : 'asc'}
-                                onClick={() => handleRequestSort('amount')}
+                                active={orderBy === 'total'}
+                                direction={orderBy === 'total' ? order : 'asc'}
+                                onClick={() => handleRequestSort('total')}
                                 >
-                                Montant
+                                Total
                                 </TableSortLabel>
                             </TableCell>
                         </TableRow>

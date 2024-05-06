@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { Box, Drawer, List, ListItem, ListItemText, ListItemIcon, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import HistoryIcon from '@mui/icons-material/History';
-import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import ProductList from '../components/ProductList';
 import OrderHistory from '../components/OrderHistory';
-import Profile from '../components/Profile';
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);
@@ -23,7 +21,6 @@ export default function HomePage() {
   const menuItems = [
     { text: 'Products', icon: <ShoppingCartIcon />, component: <ProductList /> },
     { text: 'Order History', icon: <HistoryIcon />, component: <OrderHistory /> },
-    { text: 'Profile', icon: <PersonIcon />, component: <Profile /> },
   ];
 
   return (

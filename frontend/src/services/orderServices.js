@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:8083/service/order';
 
 export const createOrder = async (orderData) => {
     try {
-        const response = await axios.post(`${API_URL}/createCommande`, orderData);
+        const response = await axios.post(`${API_URL}/addProductToOrder`, orderData);
         return response.data;
     } catch (error) {
         throw error;
@@ -34,12 +34,3 @@ export const getOrdersByClient = async (idClient) => {
     }
 };
 
-
-export const addProductToOrder = async (commandeDTO) => {
-    try {
-        const response = await axios.post(`${API_URL}/addProductToOrder`, commandeDTO);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};

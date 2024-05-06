@@ -32,11 +32,11 @@ public class OrderService {
         for (ProductDTO product : products) {
             OrderEntity orderEntity = new OrderEntity();
             orderEntity.setIdClient(commandeDTO.getIdClient());
-            orderEntity.setIdProduit(commandeDTO.getIdClient());
+            orderEntity.setIdProduit(product.getId());
             orderEntity.setName(product.getName());
             orderEntity.setDescription(product.getDescription());
-            orderEntity.setQuantite(commandeDTO.getIdClient());
-            orderEntity.setMontant(commandeDTO.getIdClient());
+            orderEntity.setQuantite(product.getQuantity());
+            orderEntity.setMontant(product.getMontant());
             orderEntity.setDate(ZonedDateTime.now());
             orderEntity.setStatus(commandeDTO.getStatus());
             orderEntity.setTotal(commandeDTO.getTotal());

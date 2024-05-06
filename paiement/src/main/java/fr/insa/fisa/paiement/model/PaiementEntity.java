@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -19,7 +20,7 @@ public class PaiementEntity {
     @Column
     float montant;
     @Column(name="date_paiement")
-    LocalDateTime datePaiement;
+    Date datePaiement;
     @Column
     boolean valid;
 }

@@ -3,15 +3,16 @@ package fr.insa.fisa.paiement.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class PaiementDto {
     private String libelle;
     private Long idClient;
     private float montant;
-    private LocalDateTime datePaiement;
+    private Date datePaiement;
 
-    public PaiementDto(String libelle, Long idClient, float montant, LocalDateTime datePaiement) {
+    public PaiementDto(String libelle, Long idClient, float montant, Date datePaiement) {
         this.libelle = libelle;
         this.idClient = idClient;
         this.montant = montant;
@@ -42,11 +43,11 @@ public class PaiementDto {
         this.montant = montant;
     }
 
-    public LocalDateTime getDatePaiement() {
+    public Date getDatePaiement() {
         return datePaiement;
     }
 
-    public void setDatePaiement(LocalDateTime datePaiement) {
+    public void setDatePaiement(Date datePaiement) {
         this.datePaiement = datePaiement;
     }
 }

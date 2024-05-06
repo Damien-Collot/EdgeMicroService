@@ -35,7 +35,7 @@ export default function ProductList() {
     }, [enqueueSnackbar]);
     
 
-    const handlePayment = async (orderId, montant) => {
+    const handlePayment = async (montant) => {
         const paymentData = {
             montant: montant,
             idClient: localStorage.getItem('userId'),
@@ -85,16 +85,16 @@ export default function ProductList() {
         const orderData = {
             products: selectedProducts,
             total: calculateTotal(),
-            clientId: localStorage.getItem('userId'),
+            idClient: localStorage.getItem('userId'),
             status: 'pending'
         };
 
         try {
             console.log("Order data to send:", orderData);
             const response = await createOrder(orderData);
-            if (response && response.id) {
+            if (response) {
                 enqueueSnackbar('Order created successfully', { variant: 'success' });
-                handlePayment(response.id, orderData.total);
+                handlePayment(orderData.total);
             } else {
                 enqueueSnackbar('Failed to create order', { variant: 'error' });
             }

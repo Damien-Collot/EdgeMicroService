@@ -60,17 +60,13 @@ public class CommandeController {
         }
     }
 
-    @GetMapping("/addProductToOrder")
-    public void addProductsToOrder(@RequestBody CommandeDTO commandeDTO) {
+    @PostMapping("/addProductToOrder")
+    public ResponseEntity<?> addProductsToOrder(@RequestBody CommandeDTO commandeDTO) {
         try {
             orderService.addProduct(commandeDTO);
-//            if (orderEntity != null){
-//                return ResponseEntity.ok(orderEntity);
-//            }else{
-//                return ResponseEntity.noContent().build();
-//            }
+            return ResponseEntity.ok("Commande créée");
         }catch (Exception e){
-//            return ResponseEntity.internalServerError().body(e);
+            return ResponseEntity.internalServerError().body(e);
         }
     }
 }
